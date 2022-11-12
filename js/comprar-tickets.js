@@ -83,10 +83,11 @@ let categoria = document.querySelector("#categoriaSelect");
 let resultado = document.querySelector("#totalPago");
 let btnBorrar = document.querySelector("#btnBorrar");
 let btnCalcular = document.querySelector("#btnResumen");
+let formTicket = document.querySelector("#form-ticket")
 
 // 4. APLICAR LA ESTRATEGIA PARA ESCUCHAR O CAPTURAR EL EVENTO
 
-btnCalcular.addEventListener("click", validator());
+btnCalcular.addEventListener("click", validator);
 btnBorrar.addEventListener("click", borrar);
 
 function calcularTotal(event) {
@@ -108,7 +109,7 @@ function calcularDescuento(categoria) {
     case "3":
       return (TICKET * 15) / 100;
     default:
-      return -1;
+      return 0;
   }
 }
 
@@ -121,34 +122,28 @@ function borrar() {
 }
 
 function mostrarTotal() {
-    console.log("Boton apretado")
     totalPago.textContent = calcularTotal();
   }
 
-  function validator() {
+function validator() {
     'use strict'
   
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.querySelectorAll('.needs-validation')
-  
-    // Loop over them and prevent submission
-    Array.prototype.slice.call(forms)
-      .forEach(function (form) {
-        form.addEventListener('click', function (event) {
-          console.log(`cantidad ${cantidad.value}`)
-          console.log(typeof(cantidad.value))
-          let validation_fail = (!form.checkValidity() || ( 0 < parseInt(cantidad.value) < 5) || (calcularDescuento == -1)) 
+    
+    console.log("ejecuto validator")
+
+        // agarra el formulario a validar
+          var form = document.querySelectorAll('.needs-validation')[0]
+
+          let validation_fail = (!form.checkValidity() || ( 0 < parseInt(cantidad.value) < 5) ) 
           if (validation_fail) {
             event.preventDefault()
             event.stopPropagation()
-            console.log(`entro como invalido`)
+            resultado.textContent = "Por favor complete todos los campos necesarios";
           }  
           form.classList.add('was-validated')
-          console.log(`form is valid ${form.checkValidity()}`)
           if (form.checkValidity()){
-
-            calcularTotal()
+            //calcularTotal()
+            console.log('valido los campos')
+            
           }
-        }, false)
-      })
-  }
+        }
